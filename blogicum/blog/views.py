@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 
 # Create your views here.
- posts = [
+posts = [
      {
          'id': 0,
          'location': 'Остров отчаянья',
