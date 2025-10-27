@@ -50,13 +50,7 @@ def index(request):
     return render(request, 'blog/index.html', context)
 
 def post_detail(request, id):
-    post = None
-    for p in posts:
-        if p['id'] == id:
-            post = p
-            break  # break должен быть внутри if, чтобы цикл останавливался только если нашли нужный пост
-    if post is None:
-        raise Http404('Пост не найден')
+    post = posts[id]
     context = {'post': post}
     return render(request, 'blog/detail.html', context)
 
