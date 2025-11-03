@@ -1,3 +1,5 @@
+from django.http import Http404
+
 from django.shortcuts import render
 
 
@@ -49,10 +51,24 @@ def index(request):
     return render(request, 'blog/index.html', {'posts': posts})
 
 
+def _get_post_or_404(post_id):
+    try:
+        return posts[post_id]
+    except IndexError as exc:
+        raise Http404('Запрошенный пост не найден.') from exc
+
+
 def post_detail(request, post_id):
-    post = posts[post_id]
+    post = _get_post_or_404(post_id)
     return render(request, 'blog/detail.html', {'post': post})
 
 
 def category_posts(request, category_slug):
-    return render(request, 'blog/category.html', {'category_slug': category_slug})
+    category_posts = [
+        post for post in posts if post['category'] == category_slug
+    ]
+    context = {
+        'category_slug': category_slug,
+        'posts': category_posts,
+    }
+    return render(request, 'blog/category.html', context)
