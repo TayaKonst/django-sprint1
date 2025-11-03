@@ -1,7 +1,7 @@
+from django.http import Http404
 from django.shortcuts import render
 
 
-# Create your views here.
 posts = [
     {
         'id': 0,
@@ -47,16 +47,27 @@ posts = [
 
 
 def index(request):
-    context = {'posts': posts}
-    return render(request, 'blog/index.html', context)
+    return render(request, 'blog/index.html', {'posts': posts})
 
 
-def post_detail(request, id):
-    post = posts[id]
-    context = {'post': post}
-    return render(request, 'blog/detail.html', context)
+def _get_post_or_404(post_id):
+    try:
+        return posts[post_id]
+    except IndexError as exc:
+        raise Http404('Запрошенный пост не найден.') from exc
+
+
+def post_detail(request, post_id):
+    post = _get_post_or_404(post_id)
+    return render(request, 'blog/detail.html', {'post': post})
 
 
 def category_posts(request, category_slug):
-    context = {'category_slug': category_slug}
-    return render(request, 'blog/category.html', context)
+    posts_by_category = [
+        post for post in posts if post['category'] == category_slug
+    ]
+    return render(
+        request,
+        'blog/category.html',
+        {'category_slug': category_slug, 'posts': posts_by_category},
+    )
