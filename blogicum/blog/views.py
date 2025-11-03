@@ -1,5 +1,4 @@
 from django.http import Http404
-
 from django.shortcuts import render
 
 
@@ -64,11 +63,11 @@ def post_detail(request, post_id):
 
 
 def category_posts(request, category_slug):
-    category_posts = [
+    posts_by_category = [
         post for post in posts if post['category'] == category_slug
     ]
-    context = {
-        'category_slug': category_slug,
-        'posts': category_posts,
-    }
-    return render(request, 'blog/category.html', context)
+    return render(
+        request,
+        'blog/category.html',
+        {'category_slug': category_slug, 'posts': posts_by_category},
+    )

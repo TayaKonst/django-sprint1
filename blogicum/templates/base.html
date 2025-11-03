@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="ru">
   <head>
@@ -12,12 +13,12 @@
     <title>{% block title %}Лента записей{% endblock %}</title>
   </head>
   <body>
-    {% include 'header.html' %}
+    {% include 'includes/header.html' %}
     <main>
       <div class="container py-5">
         {% block content %}{% endblock %}
       </div>
     </main>
-    {% include 'footer.html' %}
+    {% include 'includes/footer.html' %}
   </body>
 </html>
